@@ -11,7 +11,14 @@ app.use(express.json());
 app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUninitialized: true}))
 
 app.use("/customer/auth/*", function auth(req,res,next){
- next();
+
+if (req.session && req.session.user) {
+     return next();
+  }
+
+   res.status(401).json({ error: "Unauthorized" });
+
+
 });
  
 const PORT =5000;
